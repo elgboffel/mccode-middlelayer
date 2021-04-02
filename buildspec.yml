@@ -1,31 +1,30 @@
-﻿# Do not change version. This is the version of aws buildspec, not the version of your buldspec file.
-version: 0.2
+﻿version: 0.2
+eb_codebuild_settings:
+  CodeBuildServiceRole: role-name
+  ComputeType: BUILD_GENERAL1_SMALL
+  Image: aws/codebuild/standard:2.0
+  Timeout: 30
 
 phases:
   install:
     runtime-versions:
-      nodejs: 12
-    commands:
-      - echo Installing Mocha...
-      - npm install
+      nodejs: 14
   pre_build:
     commands:
-      - echo Installing source NPM dependencies...
-      - npm ci
+      - npm install
+      - echo INSTALL completed on `date`
   build:
     commands:
-      - echo Build started on `date`
-      - echo Compiling the Node.js code
-      - nest build
-  post_build:
-    commands:
-      - echo Build completed on `date`
-# Include only the files required for your application to run.
-# Do not use recursively include artifacts from node_modules directory as it will include unnecessary packages
-# used only for building and testing.
-# ExpressJS apps will need other artifact directories included (bin/*, public/*, routes/*, views/* etc).
+      - echo BUILD started on `date`
+      - echo `pwd`
+      - npm run build
+      - echo BUILD completed on `date`
 artifacts:
   files:
     - .ebextensions/*
     - package.json
     - dist/**/*
+
+cache:
+  paths:
+    - '/node_modules/*/**'
