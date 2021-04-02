@@ -1,1 +1,1 @@
-﻿web: nest build && node dist/main
+﻿web: npm run deploy
