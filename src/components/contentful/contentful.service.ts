@@ -20,7 +20,7 @@ export class ContentfulService {
   public async getPage(id: string): Promise<Page> | null {
     const cachedEntry = await this._cacheManager.get<Page>(id);
 
-    // if (cachedEntry) return cachedEntry;
+    if (cachedEntry) return cachedEntry;
 
     const page: Entry<unknown> = await this._client.getEntry(id);
 
