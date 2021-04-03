@@ -4,7 +4,7 @@ import { ApiResponse } from "@nestjs/swagger";
 import { ApiAuthGuard } from "../../common/apiAuth.guard";
 import { Webhook } from "./models/webhook.model";
 
-// @UseGuards(ApiAuthGuard)
+@UseGuards(ApiAuthGuard)
 @Controller("contentful")
 export class ContentfulController {
   constructor(private readonly _contentfulService: ContentfulService) {}
