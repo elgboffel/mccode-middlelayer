@@ -1,8 +1,8 @@
 ﻿version: 0.2
 eb_codebuild_settings:
-  CodeBuildServiceRole: role-name
+  CodeBuildServiceRole: aws_code_build
   ComputeType: BUILD_GENERAL1_SMALL
-  Image: aws/codebuild/standard:2.0
+  Image: aws/codebuild/standard:5.0
   Timeout: 30
 
 phases:
@@ -21,7 +21,6 @@ phases:
       - echo BUILD completed on `date`
 artifacts:
   files:
-    - .ebextensions/*
     - package.json
     - dist/**/*
 
