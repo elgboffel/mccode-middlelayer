@@ -1,5 +1,5 @@
 ﻿export enum ComponentAlias {
   Media = "media",
   Person = "person",
-  Columns = "columns",
+  Columns = "modules",
 }

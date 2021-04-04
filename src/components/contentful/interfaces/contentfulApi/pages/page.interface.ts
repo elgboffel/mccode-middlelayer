@@ -1,6 +1,6 @@
 ﻿import { Asset } from "contentful";
 import { Entry } from "../base/entry.interface";
-import { IComponentType } from "../componentType.interface";
+import { IComponentType } from "../components/componentType.interface";
 
 export interface IPageFields {
   internalName: string;

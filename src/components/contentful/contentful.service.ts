@@ -1,8 +1,12 @@
-﻿import { CACHE_MANAGER, Inject, Injectable } from "@nestjs/common";
-import { ContentfulClientApi, createClient, Entry } from "contentful";
+﻿import { CACHE_MANAGER, Inject, Injectable, Optional } from "@nestjs/common";
+import { ContentfulClientApi, createClient } from "contentful";
 import { Cache } from "cache-manager";
 import { Page } from "./models/pages/page.model";
 import { IPage } from "./interfaces/contentfulApi/pages/page.interface";
+import { ComponentAlias } from "./interfaces/contentfulApi/components/componentAlias.enum";
+import { IColumns } from "./interfaces/contentfulApi/components/columns.interface";
+import { Columns } from "./models/components/columns.model";
+import { Components } from "./models/components.model";
 
 @Injectable()
 export class ContentfulService {
@@ -18,17 +22,31 @@ export class ContentfulService {
   }
 
   public async getPage(id: string): Promise<Page> | null {
-    const cachedEntry = await this._cacheManager.get<Page>(id);
+    const cachedPage = await this._cacheManager.get<Page>(id);
 
-    if (cachedEntry) return cachedEntry;
+    if (cachedPage) return cachedPage;
 
-    const page: Entry<unknown> = await this._client.getEntry(id);
+    const page = await this.getEntry<IPage>(id);
 
     if (!page) return null;
 
-    const model = new Page(page as IPage);
+    const model = new Page(page);
+
+    for (const component of model.content) {
+      if (component.contentType === ComponentAlias.Columns) {
+        const columns = component as Columns;
+        const entry: IColumns = await this._client.getEntry(columns.id);
+
+        columns.components = new Components(entry.fields.components).list;
+      }
+    }
 
     return await this._cacheManager.set<Page>(id, model);
+  }
+
+  public async getEntry<T>(id: string): Promise<T> {
+    const entry: unknown = await this._client.getEntry(id);
+    return entry as T;
   }
 
   public async clearPageCache(id: string) {

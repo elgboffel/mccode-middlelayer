@@ -2,6 +2,7 @@
 
 export class EntryBase {
   constructor(baseArgs: Sys) {
+    this.id = baseArgs.id;
     this.type = baseArgs?.type;
     this.locale = baseArgs?.locale;
     this.createdAt = baseArgs?.createdAt;
@@ -9,6 +10,7 @@ export class EntryBase {
     this.contentType = baseArgs?.contentType?.sys?.id;
   }
 
+  id: string;
   type: string;
   locale: string;
   createdAt: string;
