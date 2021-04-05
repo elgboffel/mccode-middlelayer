@@ -1,4 +1,4 @@
-﻿import { CACHE_MANAGER, Inject, Injectable, Optional } from "@nestjs/common";
+﻿import { CACHE_MANAGER, Inject, Injectable } from "@nestjs/common";
 import { ContentfulClientApi, createClient } from "contentful";
 import { Cache } from "cache-manager";
 import { Page } from "./models/pages/page.model";
@@ -7,6 +7,7 @@ import { ComponentAlias } from "./interfaces/contentfulApi/components/componentA
 import { IColumns } from "./interfaces/contentfulApi/components/columns.interface";
 import { Columns } from "./models/components/columns.model";
 import { Components } from "./models/components.model";
+import { PathCollection } from "./models/pages/pathsCollection.model";
 
 @Injectable()
 export class ContentfulService {
@@ -19,6 +20,15 @@ export class ContentfulService {
         space: process.env.CONTENTFUL_SPACE_ID,
         accessToken: process.env.CONTENTFUL_DELIVERY_ACCESS_TOKEN,
       });
+  }
+
+  public async getPaths(): Promise<PathCollection> {
+    const pageCollection = await this._client.getEntries<IPage>({
+      content_type: "page",
+      include: 1,
+    });
+
+    return new PathCollection((pageCollection?.items as unknown) as IPage[]);
   }
 
   public async getPage(id: string): Promise<Page> | null {
@@ -45,7 +55,7 @@ export class ContentfulService {
   }
 
   public async getEntry<T>(id: string): Promise<T> {
-    const entry: unknown = await this._client.getEntry(id);
+    const entry: unknown = await this._client.getEntry(id, { include: 6 });
     return entry as T;
   }
 

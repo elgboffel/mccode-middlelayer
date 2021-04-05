@@ -9,6 +9,11 @@ import { Webhook } from "./models/webhook.model";
 export class ContentfulController {
   constructor(private readonly _contentfulService: ContentfulService) {}
 
+  @Get("pages/get-paths")
+  async getPaths(): Promise<unknown> {
+    return await this._contentfulService.getPaths();
+  }
+
   @Get("page/:pageId")
   async getPage(@Param("pageId") pageId: string): Promise<unknown> {
     return await this._contentfulService.getPage(pageId);
