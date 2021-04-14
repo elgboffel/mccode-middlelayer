@@ -3,10 +3,6 @@ import { ContentfulClientApi, createClient } from "contentful";
 import { Cache } from "cache-manager";
 import { Page } from "./models/pages/page.model";
 import { IPage } from "./interfaces/contentfulApi/pages/page.interface";
-import { ComponentAlias } from "./interfaces/contentfulApi/components/componentAlias.enum";
-import { IColumns } from "./interfaces/contentfulApi/components/columns.interface";
-import { Columns } from "./models/components/columns.model";
-import { Components } from "./models/components.model";
 import { PathCollection } from "./models/pages/pathsCollection.model";
 
 @Injectable()
@@ -41,15 +37,6 @@ export class ContentfulService {
     if (!page) return null;
 
     const model = new Page(page);
-
-    for (const component of model.content) {
-      if (component.contentType === ComponentAlias.Columns) {
-        const columns = component as Columns;
-        const entry: IColumns = await this._client.getEntry(columns.id);
-
-        columns.components = new Components(entry.fields.components).list;
-      }
-    }
 
     return await this._cacheManager.set<Page>(id, model);
   }

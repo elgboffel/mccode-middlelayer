@@ -1,8 +1,8 @@
 ﻿import { Req, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { ContentfulService } from "./contentful.service";
 import { ApiResponse } from "@nestjs/swagger";
-import { ApiAuthGuard } from "../../common/apiAuth.guard";
 import { Webhook } from "./models/webhook.model";
+import { ApiAuthGuard } from "../../common/apiAuth.guard";
 
 @UseGuards(ApiAuthGuard)
 @Controller("contentful")
