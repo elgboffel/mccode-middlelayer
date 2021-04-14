@@ -1,4 +1,12 @@
-﻿import { Req, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+﻿import {
+  Req,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  Query,
+} from "@nestjs/common";
 import { ContentfulService } from "./contentful.service";
 import { ApiResponse } from "@nestjs/swagger";
 import { Webhook } from "./models/webhook.model";
@@ -17,6 +25,11 @@ export class ContentfulController {
   @Get("page/:pageId")
   async getPage(@Param("pageId") pageId: string): Promise<unknown> {
     return await this._contentfulService.getPage(pageId);
+  }
+
+  @Get("page/by-slug/:slug")
+  async getPageBySlug(@Param("slug") slug: string): Promise<unknown> {
+    return await this._contentfulService.getPageBySlug(slug);
   }
 
   @Post("page/clear-cache")

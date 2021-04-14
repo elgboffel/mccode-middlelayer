@@ -11,8 +11,11 @@ export class Page extends EntryBase {
     this.slug = pageArgs?.fields?.slug;
     this.heading = pageArgs?.fields?.heading;
     this.description = pageArgs?.fields?.description;
-    this.image = new ImageField(pageArgs?.fields?.image);
-    this.content = new Components(pageArgs?.fields?.content)?.list;
+    this.image =
+      pageArgs?.fields?.image && new ImageField(pageArgs.fields.image);
+    this.content =
+      pageArgs?.fields?.content &&
+      new Components(pageArgs.fields.content)?.list;
   }
 
   slug: string;

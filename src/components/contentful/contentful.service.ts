@@ -19,12 +19,12 @@ export class ContentfulService {
   }
 
   public async getPaths(): Promise<PathCollection> {
-    const pageCollection = await this._client.getEntries<IPage>({
+    const pageCollection = await this.getEntriesWithQuery<IPage[]>({
       content_type: "page",
       include: 1,
     });
 
-    return new PathCollection((pageCollection?.items as unknown) as IPage[]);
+    return new PathCollection(pageCollection);
   }
 
   public async getPage(id: string): Promise<Page> | null {
@@ -41,9 +41,36 @@ export class ContentfulService {
     return await this._cacheManager.set<Page>(id, model);
   }
 
+  public async getPageBySlug(slug: string): Promise<Page> | null {
+    const cachedPage = await this._cacheManager.get<Page>(slug);
+
+    if (cachedPage) return cachedPage;
+    const page = await this.getEntriesWithQuery<IPage[]>({
+      content_type: "page",
+      "fields.slug": slug,
+      include: 6,
+    });
+    console.log(page[0]);
+
+    if (!page) return null;
+
+    const model = new Page(page[0]);
+
+    return await this._cacheManager.set<Page>(slug, model);
+  }
+
   public async getEntry<T>(id: string): Promise<T> {
     const entry: unknown = await this._client.getEntry(id, { include: 6 });
     return entry as T;
+  }
+
+  public async getEntriesWithQuery<T>(query: any): Promise<T> {
+    const entries = await this._client.getEntries(query);
+
+    if (!entries?.items) return null;
+
+    const items: unknown = entries?.items;
+    return items as T;
   }
 
   public async clearPageCache(id: string) {
