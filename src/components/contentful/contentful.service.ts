@@ -42,13 +42,17 @@ export class ContentfulService {
     return await this._cacheManager.set<Page>(id, model);
   }
 
-  public async getPageBySlug(slug: string): Promise<Page> | null {
+  public async getPageBySlug(
+    slug: string,
+    locale: string,
+  ): Promise<Page> | null {
     const cachedPage = await this._cacheManager.get<Page>(slug);
 
     if (cachedPage) return cachedPage;
     const page = await this.getEntriesWithQuery<IPage[]>({
       content_type: "page",
       "fields.slug": slug,
+      locale,
       include: 6,
     });
     console.log(page[0]);

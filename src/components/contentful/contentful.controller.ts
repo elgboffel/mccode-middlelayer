@@ -27,9 +27,12 @@ export class ContentfulController {
     return await this._contentfulService.getPage(pageId);
   }
 
-  @Get("page/by-slug/:slug")
-  async getPageBySlug(@Param("slug") slug: string): Promise<unknown> {
-    return await this._contentfulService.getPageBySlug(slug);
+  @Get("page/by-slug/:slug/:locale")
+  async getPageBySlug(
+    @Param("slug") slug: string,
+    @Param("locale") locale?: string,
+  ): Promise<unknown> {
+    return await this._contentfulService.getPageBySlug(slug, locale);
   }
 
   @Post("page/clear-cache")
