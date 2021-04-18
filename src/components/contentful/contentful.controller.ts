@@ -30,8 +30,9 @@ export class ContentfulController {
   @Get("page/by-slug/:slug/:locale")
   async getPageBySlug(
     @Param("slug") slug: string,
-    @Param("locale") locale?: string,
+    @Param("locale") locale: string,
   ): Promise<unknown> {
+    console.log(locale);
     return await this._contentfulService.getPageBySlug(slug, locale);
   }
 

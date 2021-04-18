@@ -55,7 +55,6 @@ export class ContentfulService {
       locale,
       include: 6,
     });
-    console.log(page[0]);
 
     if (!page) return null;
 
