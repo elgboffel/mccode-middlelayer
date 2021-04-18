@@ -14,9 +14,11 @@ export class Path {
     this.id = page?.sys?.id;
     this.contentType = page?.sys?.contentType?.sys?.id;
     this.slug = page?.fields?.slug;
+    this.locale = page?.sys?.locale;
   }
 
   id: string;
   contentType: string;
   slug: string;
+  locale: string;
 }
