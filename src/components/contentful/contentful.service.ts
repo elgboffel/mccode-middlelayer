@@ -21,6 +21,7 @@ export class ContentfulService {
   public async getPaths(): Promise<PathCollection> {
     const pageCollection = await this.getEntriesWithQuery<IPage[]>({
       content_type: "page",
+      locale: "*",
       include: 1,
     });
 
