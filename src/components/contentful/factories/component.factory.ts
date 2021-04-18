@@ -8,6 +8,8 @@ import { IColumns } from "../interfaces/contentfulApi/components/columns.interfa
 import { Columns } from "../models/components/columns.model";
 import { ComponentType } from "../models/componentType.model";
 import { ContentfulClientApi, createClient } from "contentful";
+import { IText } from "../interfaces/contentfulApi/components/text.interface";
+import { Text } from "../models/components/text.model";
 
 export class ComponentFactory {
   private readonly _client: ContentfulClientApi;
@@ -33,6 +35,8 @@ export class ComponentFactory {
         return new Media(component as IMedia);
       case ComponentAlias.Columns:
         return new Columns(component as IColumns);
+      case ComponentAlias.Text:
+        return new Text(component as IText);
     }
   }
 }

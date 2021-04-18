@@ -2,4 +2,5 @@
   Media = "media",
   Person = "person",
   Columns = "modules",
+  Text = "text",
 }
