@@ -27,12 +27,11 @@ export class ContentfulController {
     return await this._contentfulService.getPage(pageId);
   }
 
-  @Get("page/by-slug/:slug/:locale")
+  @Get("page/by-slug/:locale/:slug")
   async getPageBySlug(
-    @Param("slug") slug: string,
     @Param("locale") locale: string,
+    @Param("slug") slug: string,
   ): Promise<unknown> {
-    console.log(locale);
     return await this._contentfulService.getPageBySlug(slug, locale);
   }
 
@@ -42,5 +41,13 @@ export class ContentfulController {
   })
   async clearPageCache(@Req() req: Webhook) {
     return await this._contentfulService.clearPageCache(req?.body?.entityId);
+  }
+
+  @Get("page/clear-cache/:pageId")
+  @ApiResponse({
+    status: 200,
+  })
+  async clearPageCacheById(@Param("pageId") pageId: string) {
+    return await this._contentfulService.clearPageCache(pageId);
   }
 }

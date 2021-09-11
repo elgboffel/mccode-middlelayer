@@ -18,6 +18,8 @@ export class ApiAuthGuard implements CanActivate {
     const apiKey: string = request.header(API_KEY_HEADER);
     const host: string = request.header("host");
 
+    if (process.env.API_GUARD !== "enable") return true;
+
     if (!WHITELIST_DOMAINS.some((domain) => host.includes(domain))) {
       throw new HttpException(
         `Unauthorized host ${host}`,

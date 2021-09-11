@@ -18,7 +18,7 @@ export class Page extends EntryBase {
       new Components(pageArgs.fields.content)?.list;
   }
 
-  slug: string;
+  slug: Record<string, string>;
   heading: string;
   description: string;
   image: ImageField;

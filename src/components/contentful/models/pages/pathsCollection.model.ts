@@ -15,10 +15,19 @@ export class Path {
     this.contentType = page?.sys?.contentType?.sys?.id;
     this.slug = page?.fields?.slug;
     this.locale = page?.sys?.locale;
+    this.childPages = page.fields?.childPages
+      ? Object.entries(page.fields.childPages).reduce((acc, [k, p]) => {
+          acc[k] = p.map((x) => x.sys.id);
+          return acc;
+        }, {})
+      : null;
   }
 
   id: string;
   contentType: string;
-  slug: string;
+  slug: Record<string, string>;
   locale: string;
+  childPages: Record<string, string[]>;
+  parents: Record<string, string[]>;
+  url: Record<string, string>;
 }

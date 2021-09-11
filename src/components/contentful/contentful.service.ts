@@ -22,7 +22,7 @@ export class ContentfulService {
     const pageCollection = await this.getEntriesWithQuery<IPage[]>({
       content_type: "page",
       locale: "*",
-      include: 1,
+      include: 3,
     });
 
     return new PathCollection(pageCollection);
