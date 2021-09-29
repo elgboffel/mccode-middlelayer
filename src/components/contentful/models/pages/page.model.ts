@@ -9,9 +9,9 @@ export class Page extends EntryBase {
   constructor(pageArgs: IPage, Paths?: PathCollection) {
     super(pageArgs?.sys);
 
-    const path = Paths.paths.find((x) => x.id === this.id);
+    const path = Paths?.paths.find((x) => x.id === this.id);
 
-    this.urls = path.urls?.[this.locale];
+    this.urls = path?.urls?.[this.locale] ?? null;
     this.slug = pageArgs?.fields?.slug?.[this.locale];
     this.heading = pageArgs?.fields?.heading ?? null;
     this.description = pageArgs?.fields?.description ?? null;

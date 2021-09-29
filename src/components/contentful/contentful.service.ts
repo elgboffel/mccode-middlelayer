@@ -67,7 +67,7 @@ export class ContentfulService {
 
     if (!page) return null;
 
-    const model = new Page(page[0]);
+    const model = new Page(page[0], await this.getPaths());
 
     return await this._cacheManager.set<Page>(slug, model);
   }
