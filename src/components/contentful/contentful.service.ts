@@ -19,13 +19,22 @@ export class ContentfulService {
   }
 
   public async getPaths(): Promise<PathCollection> {
+    const cachedPaths = await this._cacheManager.get<PathCollection>(
+      "PATH_COLLECTION",
+    );
+
+    if (cachedPaths) return cachedPaths;
+
     const pageCollection = await this.getEntriesWithQuery<IPage[]>({
       content_type: "page",
       locale: "*",
       include: 3,
     });
 
-    return new PathCollection(pageCollection);
+    return await this._cacheManager.set<PathCollection>(
+      "PATH_COLLECTION",
+      new PathCollection(pageCollection),
+    );
   }
 
   public async getPage(id: string): Promise<Page> | null {
@@ -37,7 +46,7 @@ export class ContentfulService {
 
     if (!page) return null;
 
-    const model = new Page(page);
+    const model = new Page(page, await this.getPaths());
 
     return await this._cacheManager.set<Page>(id, model);
   }
@@ -64,7 +73,7 @@ export class ContentfulService {
   }
 
   public async getEntry<T>(id: string): Promise<T> {
-    const entry: unknown = await this._client.getEntry(id, { include: 6 });
+    const entry: unknown = await this._client.getEntry<T>(id, { include: 6 });
     return entry as T;
   }
 
@@ -78,6 +87,21 @@ export class ContentfulService {
   }
 
   public async clearPageCache(id: string) {
-    return await this._cacheManager.del(id);
+    await this._cacheManager.del(id);
+    return {
+      message: `Cleared cache for page with id: ${id}`,
+    };
+  }
+
+  public async clearPageCacheBySlugs(slugs: Record<string, string>) {
+    const _slugs = Object.values(slugs);
+
+    await this._cacheManager.del("PATH_COLLECTION");
+
+    _slugs.forEach((slug) => this._cacheManager.del(slug));
+
+    return {
+      message: `Cleared cache for page with slugs: ${_slugs}`,
+    };
   }
 }

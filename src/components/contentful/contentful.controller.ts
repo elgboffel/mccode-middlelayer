@@ -35,7 +35,7 @@ export class ContentfulController {
     return await this._contentfulService.getPageBySlug(slug, locale);
   }
 
-  @Post("page/clear-cache")
+  @Post("page/clear-cache-by-id")
   @ApiResponse({
     status: 200,
   })
@@ -43,11 +43,13 @@ export class ContentfulController {
     return await this._contentfulService.clearPageCache(req?.body?.entityId);
   }
 
-  @Get("page/clear-cache/:pageId")
+  @Post("page/clear-cache-by-slugs")
   @ApiResponse({
     status: 200,
   })
-  async clearPageCacheById(@Param("pageId") pageId: string) {
-    return await this._contentfulService.clearPageCache(pageId);
+  async clearPageCacheBySlug(@Req() req: Webhook) {
+    return await this._contentfulService.clearPageCacheBySlugs(
+      req?.body?.slugs,
+    );
   }
 }
