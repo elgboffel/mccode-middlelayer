@@ -1,5 +1,6 @@
 ﻿import { IPage } from "../../interfaces/contentfulApi/pages/page.interface";
 import { isEmptyObject } from "../../../../common/helpers/is-empty-object";
+import { getLocales } from "../../../../common/helpers/get-locales";
 
 export class PathCollection {
   constructor(pageCollection?: IPage[]) {
@@ -55,10 +56,7 @@ export class PathCollection {
 
     if (!localeParents)
       return [
-        slugs.reduce(
-          (prev, slug) => `${prev}${slug === "/" ? "" : "/" + slug}`,
-          `/${locale}`,
-        ),
+        slugs.reduce((prev, slug) => `${prev}/${slug === "/" ? "" : slug}`, ``),
       ];
 
     return localeParents.reduce((prev, parentId) => {
@@ -75,11 +73,12 @@ export class PathCollection {
 }
 
 export class Path {
-  constructor(page?: IPage) {
+  constructor(page: IPage) {
+    console.log(page);
     this.id = page?.sys?.id ?? null;
     this.contentType = page?.sys?.contentType?.sys?.id ?? null;
     this.slug = page?.fields?.slug ?? null;
-    this.locale = page?.sys?.locale ?? null;
+    this.locale = getLocales(page?.fields?.slug);
     this.childPages = page.fields?.childPages
       ? Object.entries(page.fields.childPages).reduce((prev, [key, page]) => {
           prev[key] = page.map((x) => x.sys.id);
@@ -91,7 +90,7 @@ export class Path {
   id: string;
   contentType: string;
   slug: Record<string, string>;
-  locale: string;
+  locale: string[];
   childPages: Record<string, string[]>;
   parents: Record<string, string[]>;
   urls: Record<string, string[]>;

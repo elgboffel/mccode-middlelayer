@@ -23,7 +23,7 @@ export class ContentfulService {
       "PATH_COLLECTION",
     );
 
-    if (cachedPaths) return cachedPaths;
+    // if (cachedPaths) return cachedPaths;
 
     const pageCollection = await this.getEntriesWithQuery<IPage[]>({
       content_type: "page",
@@ -40,7 +40,7 @@ export class ContentfulService {
   public async getPage(id: string): Promise<Page> | null {
     const cachedPage = await this._cacheManager.get<Page>(id);
 
-    if (cachedPage) return cachedPage;
+    // if (cachedPage) return cachedPage;
 
     const page = await this.getEntry<IPage>(id);
 
@@ -57,7 +57,8 @@ export class ContentfulService {
   ): Promise<Page> | null {
     const cachedPage = await this._cacheManager.get<Page>(slug);
 
-    if (cachedPage) return cachedPage;
+    // if (cachedPage) return cachedPage;
+
     const page = await this.getEntriesWithQuery<IPage[]>({
       content_type: "page",
       "fields.slug": slug,
@@ -86,10 +87,10 @@ export class ContentfulService {
     return items as T;
   }
 
-  public async clearPageCache(id: string) {
-    await this._cacheManager.del(id);
+  public async clearPageCache(slug: string) {
+    await this._cacheManager.del(slug);
     return {
-      message: `Cleared cache for page with id: ${id}`,
+      message: `Cleared cache for page with slug: ${slug}`,
     };
   }
 

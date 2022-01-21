@@ -3,4 +3,5 @@
   Person = "person",
   Columns = "modules",
   Text = "text",
+  Hero = "hero",
 }

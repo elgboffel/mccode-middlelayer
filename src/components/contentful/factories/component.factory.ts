@@ -10,6 +10,8 @@ import { ComponentType } from "../models/componentType.model";
 import { ContentfulClientApi, createClient } from "contentful";
 import { IText } from "../interfaces/contentfulApi/components/text.interface";
 import { Text } from "../models/components/text.model";
+import { Hero } from "../models/components/hero.model";
+import { IHero } from "../interfaces/contentfulApi/components/hero.interface";
 
 export class ComponentFactory {
   private readonly _client: ContentfulClientApi;
@@ -37,6 +39,8 @@ export class ComponentFactory {
         return new Columns(component as IColumns);
       case ComponentAlias.Text:
         return new Text(component as IText);
+      case ComponentAlias.Hero:
+        return new Hero(component as IHero);
     }
   }
 }

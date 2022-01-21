@@ -1,13 +1,10 @@
-﻿import { Asset } from "contentful";
-import { Entry } from "../base/entry.interface";
+﻿import { Entry } from "../base/entry.interface";
 import { IComponentType } from "../components/componentType.interface";
 
 export interface IPageFields {
   internalName: string;
   slug: Record<string, string>;
-  heading: string;
-  description: string;
-  image: Asset;
+  title: string;
   content: IComponentType[];
   childPages: Record<string, IPage[]>;
 }
