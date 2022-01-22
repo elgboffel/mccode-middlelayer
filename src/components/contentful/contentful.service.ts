@@ -74,17 +74,25 @@ export class ContentfulService {
   }
 
   public async getEntry<T>(id: string): Promise<T> {
-    const entry: unknown = await this._client.getEntry<T>(id, { include: 6 });
-    return entry as T;
+    try {
+      const entry: unknown = await this._client.getEntry<T>(id, { include: 6 });
+      return entry as T;
+    } catch (e) {
+      throw new Error(`getEntry error: ${e}`);
+    }
   }
 
   public async getEntriesWithQuery<T>(query: any): Promise<T> {
-    const entries = await this._client.getEntries(query);
+    try {
+      const entries = await this._client.getEntries(query);
 
-    if (!entries?.items) return null;
+      if (!entries?.items) return null;
 
-    const items: unknown = entries?.items;
-    return items as T;
+      const items: unknown = entries?.items;
+      return items as T;
+    } catch (e) {
+      throw new Error(`getEntriesWithQuery error: ${e}`);
+    }
   }
 
   public async clearPageCache(slug: string) {
