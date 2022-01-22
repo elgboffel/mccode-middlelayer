@@ -52,4 +52,19 @@ export class ContentfulController {
       req?.body?.slugs,
     );
   }
+
+  @Get("test")
+  async test(): Promise<unknown> {
+    return "Api works";
+  }
+
+  @Get("env")
+  async getEnv(): Promise<unknown> {
+    return {
+      CONTENTFUL_SPACE_ID: process.env.CONTENTFUL_SPACE_ID,
+      X_MCCODE_API_KEY: process.env.X_MCCODE_API_KEY,
+      CONTENTFUL_DELIVERY_ACCESS_TOKEN:
+        process.env.CONTENTFUL_DELIVERY_ACCESS_TOKEN,
+    };
+  }
 }
