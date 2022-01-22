@@ -10,12 +10,16 @@ export class ContentfulService {
   private readonly _client: ContentfulClientApi;
 
   constructor(@Inject(CACHE_MANAGER) private readonly _cacheManager: Cache) {
-    this._client =
-      this._client ??
-      createClient({
-        space: process.env.CONTENTFUL_SPACE_ID,
-        accessToken: process.env.CONTENTFUL_DELIVERY_ACCESS_TOKEN,
-      });
+    try {
+      this._client =
+        this._client ??
+        createClient({
+          space: process.env.CONTENTFUL_SPACE_ID,
+          accessToken: process.env.CONTENTFUL_DELIVERY_ACCESS_TOKEN,
+        });
+    } catch (e) {
+      throw new Error(`Error initiating contentful client: ${e}`);
+    }
   }
 
   public async getPaths(): Promise<PathCollection> {
